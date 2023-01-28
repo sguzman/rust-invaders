@@ -5,7 +5,9 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-bevy = "0.9"
+bevy = { version = "0.9.1", features = ["dynamic"] }
+bevy-inspector-egui = "0.17.0"
+bevy_editor_pls = {git = "https://github.com/PhaestusFox/bevy_editor_pls"}
 rand = "0.8"
 
 [workspace]

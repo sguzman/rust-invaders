@@ -3,6 +3,8 @@
 use bevy::math::Vec3Swizzles;
 use bevy::prelude::*;
 use bevy::sprite::collide_aabb::collide;
+use bevy_editor_pls::*;
+
 use components::{
 	Enemy, Explosion, ExplosionTimer, ExplosionToSpawn, FromEnemy, FromPlayer, Laser, Movable,
 	Player, SpriteSize, Velocity,
@@ -104,6 +106,10 @@ fn main() {
 		}))
 		.add_plugin(PlayerPlugin)
 		.add_plugin(EnemyPlugin)
+		.add_plugin(EditorPlugin)
+		.add_plugin(bevy::diagnostic::FrameTimeDiagnosticsPlugin)
+		.add_plugin(bevy::diagnostic::EntityCountDiagnosticsPlugin)
+		//.add_plugin(CommonPlugin)
 		.add_startup_system(setup_system)
 		.add_system(movable_system)
 		.add_system(player_laser_hit_enemy_system)
