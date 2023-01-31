@@ -5,10 +5,49 @@ edition = "2021"
 license = "MIT OR Apache-2.0"
 
 [dependencies]
-bevy = { version = "0.9.1", features = ["dynamic"] }
+bevy = { version = "0.9.1", features = [
+"animation",
+"bevy_animation",
+"bevy_asset",
+"bevy_audio",
+"bevy_dylib",
+"bevy_dynamic_plugin",
+"bevy_gilrs",
+"bevy_render",
+"bevy_scene",
+"bevy_sprite",
+"bevy_text",
+"bevy_ui",
+"bevy_winit",
+"dynamic",
+"filesystem_watcher",
+"flac",
+"hdr",
+"jpeg",
+"png",
+"render",
+"serialize",
+"trace",
+"trace_chrome",
+"trace_tracy",
+"vorbis",
+"wav",
+"x11",
+"zlib",
+"zstd",
+ ] }
+bevy_ecs =  "0.9.1"
 bevy-inspector-egui = "0.17.0"
-bevy_editor_pls = {git = "https://github.com/PhaestusFox/bevy_editor_pls"}
+bevy_editor_pls = {git = "https://github.com/sguzman/bevy_editor_pls"}
 rand = "0.8"
 
 [workspace]
 resolver = "2" # Important! wgpu/Bevy needs this!
+
+# Enable a small amount of optimization in debug mode
+[profile.dev]
+opt-level = 1
+
+# Enable high optimizations for dependencies (incl. Bevy), but not for our code:
+[profile.dev.package."*"]
+opt-level = 3
