@@ -17,20 +17,3 @@ pub struct EnemyPlugin;
 impl Plugin for EnemyPlugin {
 	fn build(&self, app: &mut App) {}
 }
-
-fn enemy_spawn_system(
-	mut commands: Commands,
-	game_textures: Res<GameTextures>,
-	mut enemy_count: ResMut<EnemyCount>,
-	mut formation_maker: ResMut<FormationMaker>,
-	win_size: Res<WinSize>,
-) {
-}
-
-fn enemy_fire_criteria() -> ShouldRun {
-	if thread_rng().gen_bool(1. / 60.) {
-		ShouldRun::Yes
-	} else {
-		ShouldRun::No
-	}
-}
