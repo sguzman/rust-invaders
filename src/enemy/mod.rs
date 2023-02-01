@@ -38,27 +38,6 @@ fn enemy_spawn_system(
 	mut formation_maker: ResMut<FormationMaker>,
 	win_size: Res<WinSize>,
 ) {
-	if enemy_count.0 < ENEMY_MAX {
-		// get formation and start x/y
-		let formation = formation_maker.make(&win_size);
-		let (x, y) = formation.start;
-
-		commands
-			.spawn(SpriteBundle {
-				texture: game_textures.enemy.clone(),
-				transform: Transform {
-					translation: Vec3::new(x, y, 10.),
-					scale: Vec3::new(SPRITE_SCALE, SPRITE_SCALE, 1.),
-					..Default::default()
-				},
-				..Default::default()
-			})
-			.insert(Enemy)
-			.insert(formation)
-			.insert(SpriteSize::from(ENEMY_SIZE));
-
-		enemy_count.0 += 1;
-	}
 }
 
 fn enemy_fire_criteria() -> ShouldRun {
