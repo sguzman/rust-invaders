@@ -58,9 +58,6 @@ pub struct WinSize {
 struct GameTextures {
 	player: Handle<Image>,
 	player_laser: Handle<Image>,
-	enemy: Handle<Image>,
-	enemy_laser: Handle<Image>,
-	explosion: Handle<TextureAtlas>,
 }
 
 #[derive(Resource)]
