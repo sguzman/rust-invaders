@@ -131,12 +131,6 @@ fn setup_system(
 	let win_size = WinSize { w: win_w, h: win_h };
 	commands.insert_resource(win_size);
 
-	// create explosion texture atlas
-	let texture_handle = asset_server.load(EXPLOSION_SHEET);
-	let texture_atlas =
-		TextureAtlas::from_grid(texture_handle, Vec2::new(64., 64.), 4, 4, None, None);
-	let explosion = texture_atlases.add(texture_atlas);
-
 	// add GameTextures resource
 	let game_textures = GameTextures {
 		player: asset_server.load(PLAYER_SPRITE),
