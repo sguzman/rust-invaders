@@ -20,6 +20,4 @@ pub struct FormationMaker {
 }
 
 /// Formation factory implementation
-impl FormationMaker {
-	pub fn make(&mut self, win_size: &WinSize) -> Formation {}
-}
+impl FormationMaker {}
