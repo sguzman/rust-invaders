@@ -14,7 +14,6 @@ use player::PlayerPlugin;
 use std::collections::HashSet;
 
 mod components;
-mod enemy;
 mod player;
 
 // region:    --- Asset Constants
@@ -23,14 +22,6 @@ const PLAYER_SPRITE: &str = "player_a_01.png";
 const PLAYER_SIZE: (f32, f32) = (144., 75.);
 const PLAYER_LASER_SPRITE: &str = "laser_a_01.png";
 const PLAYER_LASER_SIZE: (f32, f32) = (9., 54.);
-
-const ENEMY_SPRITE: &str = "enemy_a_01.png";
-const ENEMY_SIZE: (f32, f32) = (144., 75.);
-const ENEMY_LASER_SPRITE: &str = "laser_b_01.png";
-const ENEMY_LASER_SIZE: (f32, f32) = (17., 55.);
-
-const EXPLOSION_SHEET: &str = "explo_a_sheet.png";
-const EXPLOSION_LEN: usize = 16;
 
 const SPRITE_SCALE: f32 = 0.5;
 
