@@ -9,7 +9,6 @@ use components::{
 	Enemy, Explosion, ExplosionTimer, ExplosionToSpawn, FromEnemy, FromPlayer, Laser, Movable,
 	Player, SpriteSize, Velocity,
 };
-use enemy::EnemyPlugin;
 use player::PlayerPlugin;
 use std::collections::HashSet;
 
