@@ -105,7 +105,6 @@ fn main() {
 			..Default::default()
 		}))
 		.add_plugin(PlayerPlugin)
-		.add_plugin(EnemyPlugin)
 		.add_plugin(EditorPlugin)
 		.add_plugin(bevy::diagnostic::FrameTimeDiagnosticsPlugin)
 		.add_plugin(bevy::diagnostic::EntityCountDiagnosticsPlugin)
