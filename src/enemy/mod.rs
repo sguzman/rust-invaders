@@ -16,19 +16,6 @@ pub struct EnemyPlugin;
 
 impl Plugin for EnemyPlugin {
 	fn build(&self, app: &mut App) {
-		app.insert_resource(FormationMaker::default())
-			.add_system_set(
-				SystemSet::new()
-					.with_run_criteria(FixedTimestep::step(1.))
-					.with_system(enemy_spawn_system),
-			)
-			.add_system_set(
-				SystemSet::new()
-					.with_run_criteria(enemy_fire_criteria)
-					.with_system(enemy_fire_system),
-			)
-			.add_system(enemy_movement_system);
-	}
 }
 
 fn enemy_spawn_system(
