@@ -15,7 +15,7 @@ mod formation;
 pub struct EnemyPlugin;
 
 impl Plugin for EnemyPlugin {
-	fn build(&self, app: &mut App) {
+	fn build(&self, app: &mut App) {}
 }
 
 fn enemy_spawn_system(
