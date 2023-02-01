@@ -111,10 +111,6 @@ fn main() {
 		//.add_plugin(CommonPlugin)
 		.add_startup_system(setup_system)
 		.add_system(movable_system)
-		.add_system(player_laser_hit_enemy_system)
-		.add_system(enemy_laser_hit_player_system)
-		.add_system(explosion_to_spawn_system)
-		.add_system(explosion_animation_system)
 		.run();
 }
 
