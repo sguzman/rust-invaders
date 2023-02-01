@@ -144,12 +144,8 @@ fn setup_system(
 	let game_textures = GameTextures {
 		player: asset_server.load(PLAYER_SPRITE),
 		player_laser: asset_server.load(PLAYER_LASER_SPRITE),
-		enemy: asset_server.load(ENEMY_SPRITE),
-		enemy_laser: asset_server.load(ENEMY_LASER_SPRITE),
-		explosion,
 	};
 	commands.insert_resource(game_textures);
-	commands.insert_resource(EnemyCount(0));
 }
 
 fn movable_system(
