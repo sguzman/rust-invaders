@@ -5,10 +5,7 @@ use bevy::prelude::*;
 use bevy::sprite::collide_aabb::collide;
 use bevy_editor_pls::*;
 
-use components::{
-	Enemy, Explosion, ExplosionTimer, ExplosionToSpawn, FromEnemy, FromPlayer, Laser, Movable,
-	Player, SpriteSize, Velocity,
-};
+use components::{FromPlayer, Laser, Movable, Player, SpriteSize, Velocity};
 use player::PlayerPlugin;
 use std::collections::HashSet;
 
