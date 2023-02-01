@@ -34,12 +34,3 @@ fn enemy_fire_criteria() -> ShouldRun {
 		ShouldRun::No
 	}
 }
-
-fn enemy_fire_system(
-	mut commands: Commands,
-	game_textures: Res<GameTextures>,
-	enemy_query: Query<&Transform, With<Enemy>>,
-) {
-}
-
-fn enemy_movement_system(mut query: Query<(&mut Transform, &mut Formation), With<Enemy>>) {}
