@@ -265,23 +265,6 @@ fn explosion_to_spawn_system(
 	game_textures: Res<GameTextures>,
 	query: Query<(Entity, &ExplosionToSpawn)>,
 ) {
-	for (explosion_spawn_entity, explosion_to_spawn) in query.iter() {
-		// spawn the explosion sprite
-		commands
-			.spawn(SpriteSheetBundle {
-				texture_atlas: game_textures.explosion.clone(),
-				transform: Transform {
-					translation: explosion_to_spawn.0,
-					..Default::default()
-				},
-				..Default::default()
-			})
-			.insert(Explosion)
-			.insert(ExplosionTimer::default());
-
-		// despawn the explosionToSpawn
-		commands.entity(explosion_spawn_entity).despawn();
-	}
 }
 
 fn explosion_animation_system(
