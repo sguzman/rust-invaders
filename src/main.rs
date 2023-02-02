@@ -48,9 +48,6 @@ struct GameTextures {
 }
 
 #[derive(Resource)]
-struct EnemyCount(u32);
-
-#[derive(Resource)]
 struct PlayerState {
 	on: bool,       // alive
 	last_shot: f64, // -1 if not shot
