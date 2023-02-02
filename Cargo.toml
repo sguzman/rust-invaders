@@ -6,35 +6,7 @@ license = "MIT OR Apache-2.0"
 
 [dependencies]
 bevy = { version = "0.9.1", features = [
-"animation",
-"bevy_animation",
-"bevy_asset",
-"bevy_audio",
-"bevy_dylib",
-"bevy_dynamic_plugin",
-"bevy_gilrs",
-"bevy_render",
-"bevy_scene",
-"bevy_sprite",
-"bevy_text",
-"bevy_ui",
-"bevy_winit",
-"dynamic",
-"filesystem_watcher",
-"flac",
-"hdr",
-"jpeg",
-"png",
-"render",
-"serialize",
-"trace",
-"trace_chrome",
-"trace_tracy",
-"vorbis",
-"wav",
 "x11",
-"zlib",
-"zstd",
  ] }
 bevy_ecs =  "0.9.1"
 bevy-inspector-egui = "0.17.0"
