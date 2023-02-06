@@ -1,36 +1,27 @@
 #![allow(unused)] // silence unused warnings while exploring (to comment out)
 
-use bevy::math::Vec3Swizzles;
 use bevy::prelude::*;
+use bevy::render::mesh::shape::Circle;
 use bevy::sprite::collide_aabb::collide;
+use bevy::{math::Vec3Swizzles, sprite::MaterialMesh2dBundle};
 use bevy_editor_pls::*;
-
-use components::{FromPlayer, Laser, Movable, Player, SpriteSize, Velocity};
-use player::PlayerPlugin;
 use std::collections::HashSet;
 
-mod components;
-mod player;
-
-// region:    --- Asset Constants
-
-const PLAYER_SPRITE: &str = "player_a_01.png";
-const PLAYER_SIZE: (f32, f32) = (144., 75.);
-const PLAYER_LASER_SPRITE: &str = "laser_a_01.png";
-const PLAYER_LASER_SIZE: (f32, f32) = (9., 54.);
+// Import meshes and materials
 
 const SPRITE_SCALE: f32 = 0.5;
-
-// endregion: --- Asset Constants
-
-// region:    --- Game Constants
 
 const TIME_STEP: f32 = 1. / 60.;
 const BASE_SPEED: f32 = 500.;
 
-const PLAYER_RESPAWN_DELAY: f64 = 2.;
-const ENEMY_MAX: u32 = 2;
-const FORMATION_MEMBERS_MAX: u32 = 2;
+#[derive(Component)]
+pub struct Velocity {
+	pub x: f32,
+	pub y: f32,
+}
+
+#[derive(Component)]
+pub struct CircleEntity;
 
 // endregion: --- Game Constants
 
@@ -40,38 +31,6 @@ pub struct WinSize {
 	pub w: f32,
 	pub h: f32,
 }
-
-#[derive(Resource)]
-struct GameTextures {
-	player: Handle<Image>,
-	player_laser: Handle<Image>,
-}
-
-#[derive(Resource)]
-struct PlayerState {
-	on: bool,       // alive
-	last_shot: f64, // -1 if not shot
-}
-impl Default for PlayerState {
-	fn default() -> Self {
-		Self {
-			on: false,
-			last_shot: -1.,
-		}
-	}
-}
-
-impl PlayerState {
-	pub fn shot(&mut self, time: f64) {
-		self.on = false;
-		self.last_shot = time;
-	}
-	pub fn spawned(&mut self) {
-		self.on = true;
-		self.last_shot = -1.;
-	}
-}
-// endregion: --- Resources
 
 fn main() {
 	App::new()
@@ -85,19 +44,20 @@ fn main() {
 			},
 			..Default::default()
 		}))
-		.add_plugin(PlayerPlugin)
 		.add_plugin(EditorPlugin)
 		.add_plugin(bevy::diagnostic::FrameTimeDiagnosticsPlugin)
 		.add_plugin(bevy::diagnostic::EntityCountDiagnosticsPlugin)
 		//.add_plugin(CommonPlugin)
 		.add_startup_system(setup_system)
-		.add_system(movable_system)
+		.add_system(move_circle_system)
+		.add_system(circle_keyboard_event_system)
 		.run();
 }
 
 fn setup_system(
 	mut commands: Commands,
-	asset_server: Res<AssetServer>,
+	mut meshes: ResMut<Assets<Mesh>>,
+	mut materials: ResMut<Assets<ColorMaterial>>,
 	mut texture_atlases: ResMut<Assets<TextureAtlas>>,
 	mut windows: ResMut<Windows>,
 ) {
@@ -115,34 +75,62 @@ fn setup_system(
 	let win_size = WinSize { w: win_w, h: win_h };
 	commands.insert_resource(win_size);
 
-	// add GameTextures resource
-	let game_textures = GameTextures {
-		player: asset_server.load(PLAYER_SPRITE),
-		player_laser: asset_server.load(PLAYER_LASER_SPRITE),
-	};
-	commands.insert_resource(game_textures);
+	commands
+		.spawn(MaterialMesh2dBundle {
+			mesh: meshes.add(shape::Circle::new(50.).into()).into(),
+			material: materials.add(ColorMaterial::from(Color::RED)),
+			transform: Transform::from_translation(Vec3::new(-10., 0., 0.)),
+			..default()
+		})
+		.insert(Velocity { x: 0., y: 0. })
+		.insert(CircleEntity);
 }
 
-fn movable_system(
+// Movable system for circle	entities
+fn move_circle_system(
 	mut commands: Commands,
 	win_size: Res<WinSize>,
-	mut query: Query<(Entity, &Velocity, &mut Transform, &Movable)>,
+	mut query: Query<(Entity, &Velocity, &mut Transform, &CircleEntity)>,
 ) {
-	for (entity, velocity, mut transform, movable) in query.iter_mut() {
+	for (entity, velocity, mut transform, circle) in query.iter_mut() {
 		let translation = &mut transform.translation;
 		translation.x += velocity.x * TIME_STEP * BASE_SPEED;
 		translation.y += velocity.y * TIME_STEP * BASE_SPEED;
 
-		if movable.auto_despawn {
-			// despawn when out of screen
-			const MARGIN: f32 = 200.;
-			if translation.y > win_size.h / 2. + MARGIN
-				|| translation.y < -win_size.h / 2. - MARGIN
-				|| translation.x > win_size.w / 2. + MARGIN
-				|| translation.x < -win_size.w / 2. - MARGIN
-			{
-				commands.entity(entity).despawn();
-			}
+		// despawn when out of screen
+		const MARGIN: f32 = 200.;
+		if translation.y > win_size.h / 2. + MARGIN
+			|| translation.y < -win_size.h / 2. - MARGIN
+			|| translation.x > win_size.w / 2. + MARGIN
+			|| translation.x < -win_size.w / 2. - MARGIN
+		{
+			commands.entity(entity).despawn();
+		}
+	}
+}
+
+// Function system that queries circles and moves them
+fn circle_keyboard_event_system(
+	kb: Res<Input<KeyCode>>,
+	// Query circle entities with a Velocity component
+	mut query: Query<(&mut Velocity, &CircleEntity)>,
+) {
+	// Move Circle entity by velocity on WASD keys press
+	for (mut velocity, circle) in query.iter_mut() {
+		if kb.pressed(KeyCode::W) {
+			velocity.y = 1.;
+		} else if kb.pressed(KeyCode::S) {
+			velocity.y = -1.;
+		} else {
+			velocity.y = 0.;
+		}
+
+		if kb.pressed(KeyCode::A) {
+			velocity.x = -1.;
+		} else if kb.pressed(KeyCode::D) {
+			velocity.x = 1.;
+		} else {
+			velocity.x = 0.;
 		}
 	}
 }
